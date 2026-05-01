@@ -54,3 +54,8 @@ ehthumbs.db
 *.jks
 key.properties
 
+# Firebase
+google-services.json
+GoogleService-Info.plist
+firebase-service-account.json
+firebase-adminsdk-*.json

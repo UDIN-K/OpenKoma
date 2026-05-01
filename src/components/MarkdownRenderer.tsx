@@ -124,6 +124,11 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, sea
         ),
         th: ({ node, ...props }) => <th className="border border-white/10 px-3 py-2 bg-[#1E293B] text-left font-semibold text-white whitespace-nowrap" {...props} />,
         td: ({ node, ...props }) => <td className="border border-white/10 px-3 py-2 text-[#E2E8F0] whitespace-nowrap" {...props} />,
+        img: ({ node, ...props }) => (
+          <span className="flex justify-center w-full my-4">
+            <img className="max-w-full rounded-xl shadow-lg border border-white/10 bg-black/20" loading="lazy" {...props} />
+          </span>
+        ),
       }}
     >
       {preprocessed}

@@ -10,6 +10,8 @@ import { OpenKomaLogo } from '../components/OpenKomaLogo';
 import { ChatHeader } from '../components/ChatHeader';
 import { ChatInputBar } from '../components/ChatInputBar';
 import { exportToPDF } from '../utils/exportPdf';
+import { exportToWord } from '../utils/exportWord';
+import { exportToMarkdown } from '../utils/exportMarkdown';
 
 export function ChatScreen({ onBack, onNavigateSettings }: { onBack: () => void, onNavigateSettings: () => void }) {
   const [input, setInput] = useState('');
@@ -30,7 +32,7 @@ export function ChatScreen({ onBack, onNavigateSettings }: { onBack: () => void,
   // Delete state
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   
-  const { conversations, activeConversationId, theme, apiKeys, addMessage, updateMessage, togglePinConversation, renameConversation, deleteConversation } = useChatStore();
+  const { conversations, activeConversationId, theme, apiKeys, addMessage, updateMessage, togglePinConversation, renameConversation, deleteConversation, userAvatar } = useChatStore();
   const { t } = useLanguageStore();
   const themeGradient = getThemeGradient(theme);
   const themeColor = getThemeColor(theme);
@@ -163,9 +165,14 @@ export function ChatScreen({ onBack, onNavigateSettings }: { onBack: () => void,
       systemInstruction = "Kamu adalah OpenKoma, asisten AI yang pintar. Selalu jawab menggunakan Bahasa Indonesia yang santai tapi profesional.";
     }
 
+    const imageGenInstruction = "\nIMPORTANT: If the user asks you to generate, draw, create, or show an image/picture, you MUST respond by returning a Markdown image using pollinations.ai. Syntax: `![image](https://image.pollinations.ai/prompt/description_of_image_with_underscores_or_url_encoded)`. Do not explain that you are a text AI or that you cannot generate images. Just output the markdown image. You CAN generate images this way.";
+    const documentGenInstruction = "\nIMPORTANT: If the user asks you to create, download, or export a PDF, Word DOCX, or Markdown file, you MUST NOT say you cannot do it. Instead, just output the content in markdown format, and politely instruct the user to click the corresponding export button (PDF, DOCX, or MD) located right beneath your message to download the file to their device.";
+    systemInstruction += imageGenInstruction + documentGenInstruction;
+
     await sendMessageStream(
       history,
-      apiKeys['openrouter'] || state.openRouterKey, // Fallback for legacy
+      apiKeys[state.provider] || (state.provider === 'openrouter' ? state.openRouterKey : null),
+      state.provider,
       state.model || 'google/gemini-2.0-flash-lite-preview-02-05:free',
       state.temperature || 0.7,
       state.maxTokens || 2048,
@@ -181,7 +188,8 @@ export function ChatScreen({ onBack, onNavigateSettings }: { onBack: () => void,
         setIsLoading(false);
       },
       systemInstruction,
-      imageBase64
+      imageBase64,
+      state.ollamaUrl
     );
   };
 
@@ -360,7 +368,7 @@ export function ChatScreen({ onBack, onNavigateSettings }: { onBack: () => void,
                     transition={{ duration: 0.2 }}
                     className={`flex flex-col w-full ${isUser ? 'items-end' : 'items-start gap-2'} transition-opacity`}
                   >
-                    <div className={`flex w-full ${isUser ? 'justify-end' : 'justify-start gap-4'}`}>
+                    <div className={`flex w-full ${isUser ? 'justify-end gap-3 items-end' : 'justify-start gap-4'}`}>
                       {!isUser && (
                         <div className="w-10 h-10 rounded-[14px] border border-white/5 bg-[#131A2A] shadow-[0_8px_32px_rgba(0,0,0,0.5)] flex items-center justify-center shrink-0 mt-1">
                           <OpenKomaLogo size={22} className="text-[#F1F5F9]" />
@@ -368,12 +376,14 @@ export function ChatScreen({ onBack, onNavigateSettings }: { onBack: () => void,
                       )}
                       
                       {isUser ? (
-                        <div className="flex items-center gap-3 bg-[#3B82F6] text-white px-5 py-3 rounded-[24px] rounded-br-[8px] shadow-[0_4px_16px_rgba(59,130,246,0.3)] max-w-[85%]">
-                          <img src="https://api.dicebear.com/7.x/notionists/svg?seed=David&backgroundColor=131A2A" alt="User" className="w-6 h-6 rounded-full shrink-0 bg-black/20" />
-                          <p className="whitespace-pre-wrap text-[15px] leading-relaxed break-words">
-                            {highlightText(message.content, searchQuery)}
-                          </p>
-                        </div>
+                        <>
+                          <div className="flex flex-col gap-2 bg-[#3B82F6] text-white px-5 py-3 rounded-[24px] rounded-br-[8px] shadow-[0_4px_16px_rgba(59,130,246,0.3)] max-w-[85%]">
+                            <p className="whitespace-pre-wrap text-[15px] leading-relaxed break-words">
+                              {highlightText(message.content, searchQuery)}
+                            </p>
+                          </div>
+                          <img src={userAvatar || "https://api.dicebear.com/7.x/notionists/svg?seed=David&backgroundColor=131A2A"} alt="User" className="w-8 h-8 rounded-full shrink-0 border border-white/10 mb-1 object-cover" />
+                        </>
                       ) : (
                         <div className="w-full max-w-[90%] text-[#F1F5F9] pt-1">
                           <div className="markdown-body dark break-words text-[15px] leading-relaxed max-w-full overflow-hidden w-full">
@@ -389,7 +399,7 @@ export function ChatScreen({ onBack, onNavigateSettings }: { onBack: () => void,
                           </div>
                           {/* Action bar: Copy & PDF Export */}
                           {message.content && !message.isStreaming && (
-                            <div className="flex items-center gap-2 mt-2 ml-0">
+                            <div className="flex items-center gap-2 mt-2 ml-0 flex-wrap">
                               <motion.button
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => {
@@ -410,6 +420,28 @@ export function ChatScreen({ onBack, onNavigateSettings }: { onBack: () => void,
                               >
                                 <FileDown size={12} />
                                 PDF
+                              </motion.button>
+                              <motion.button
+                                whileTap={{ scale: 0.9 }}
+                                onClick={() => {
+                                  const chatTitle = activeConversation?.title || 'OpenKoma Response';
+                                  exportToWord(message.content, chatTitle);
+                                }}
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[#94A3B8] hover:text-white hover:bg-white/[0.08] transition-colors text-[11px] font-medium"
+                              >
+                                <FileDown size={12} />
+                                DOCX
+                              </motion.button>
+                              <motion.button
+                                whileTap={{ scale: 0.9 }}
+                                onClick={() => {
+                                  const chatTitle = activeConversation?.title || 'OpenKoma Response';
+                                  exportToMarkdown(message.content, chatTitle);
+                                }}
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[#94A3B8] hover:text-white hover:bg-white/[0.08] transition-colors text-[11px] font-medium"
+                              >
+                                <FileDown size={12} />
+                                MD
                               </motion.button>
                             </div>
                           )}

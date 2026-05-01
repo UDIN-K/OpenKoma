@@ -19,6 +19,8 @@ interface ChatState {
   maxTokens: number;
   streaming: boolean;
   contextMemory: number;
+  userName: string;
+  userAvatar: string;
   
   addMessage: (message: Message) => void;
   updateMessage: (id: string, partialContent: string, isStreaming?: boolean) => void;
@@ -41,6 +43,8 @@ interface ChatState {
   setMaxTokens: (tokens: number) => void;
   setStreaming: (streaming: boolean) => void;
   setContextMemory: (memory: number) => void;
+  setUserName: (name: string) => void;
+  setUserAvatar: (avatar: string) => void;
 }
 
 const getSystemLanguage = () => {
@@ -69,6 +73,8 @@ export const useChatStore = create<ChatState>()(
       maxTokens: 2048,
       streaming: true,
       contextMemory: 10,
+      userName: 'User',
+      userAvatar: 'https://api.dicebear.com/7.x/notionists/svg?seed=David&backgroundColor=131A2A',
       
       createNewConversation: () => {
         const id = Date.now().toString();
@@ -170,6 +176,8 @@ export const useChatStore = create<ChatState>()(
       setMaxTokens: (tokens) => set({ maxTokens: tokens }),
       setStreaming: (streaming) => set({ streaming }),
       setContextMemory: (memory) => set({ contextMemory: memory }),
+      setUserName: (name) => set({ userName: name }),
+      setUserAvatar: (avatar) => set({ userAvatar: avatar }),
     }),
     {
       name: 'openkoma-premium-storage',
