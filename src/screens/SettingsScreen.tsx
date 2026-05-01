@@ -22,6 +22,14 @@ const PERSONALITIES = [
   { id: 'custom', icon: '✏️', name: 'Custom', desc: 'Write your own system prompt below' },
 ];
 
+const CUSTOM_PRESETS = [
+  { id: 'thinking', name: '🧠 Advanced Reasoning', prompt: 'You are an AI with advanced reasoning capabilities. For every request, think step-by-step, analyze edge cases, and provide a deep, thorough explanation. Always prioritize accuracy and logic.' },
+  { id: 'concise', name: '⚡ Concise & Short', prompt: 'You are a highly efficient assistant. Your answers should be brief, direct, and to the point. Skip pleasantries and provide only the necessary information.' },
+  { id: 'indonesian', name: '🇮🇩 Bahasa Indonesia Formal', prompt: 'Anda adalah asisten AI yang ahli dalam Bahasa Indonesia. Gunakan tata bahasa yang formal, sopan (EYD), dan sertakan istilah teknis jika diperlukan dengan penjelasan singkat.' },
+  { id: 'creative', name: '✨ Creative Storyteller', prompt: 'You are a master storyteller and creative genius. Use vivid imagery, metaphors, and an engaging narrative style for all responses. Think outside the box.' },
+  { id: 'debug', name: '🐛 Bug Hunter', prompt: 'You are an elite software engineer and debugger. Focus on finding vulnerabilities, optimizing code performance, and explaining complex architectural concepts clearly.' }
+];
+
 export function SettingsScreen({ onBack }: { onBack: () => void }) {
   const { 
     openRouterKey, setOpenRouterKey, theme, setTheme,
@@ -192,7 +200,7 @@ export function SettingsScreen({ onBack }: { onBack: () => void }) {
           >
             <ChevronLeft size={22} />
           </motion.button>
-          <h2 className="font-bold text-lg text-[#F1F5F9] ml-2">{t('home_settings')}</h2>
+          <h2 className="font-bold text-lg text-[#F1F5F9] ml-2">{t('settings_title')}</h2>
         </div>
       </header>
 
@@ -465,15 +473,46 @@ export function SettingsScreen({ onBack }: { onBack: () => void }) {
               ))}
             </div>
             {personality === 'custom' && (
-              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="bg-white/[0.04] border border-white/[0.08] rounded-[24px] p-4 flex flex-col">
-                <textarea 
-                  value={customSystemPrompt}
-                  onChange={e => setCustomSystemPrompt(e.target.value)}
-                  placeholder="You are a helpful assistant that..."
-                  className="bg-transparent border-none focus:outline-none text-sm text-[#E2E8F0] resize-none h-24 mb-2 leading-relaxed"
-                  maxLength={1000}
-                />
-                <div className="flex justify-between items-center mt-2">
+              <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="bg-white/[0.04] border border-white/[0.08] rounded-[24px] p-4 flex flex-col gap-4">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider">Presets</span>
+                    <span className="text-[10px] text-amber-400 font-medium bg-amber-400/10 px-2 py-0.5 rounded-full">New</span>
+                  </div>
+                  <div className="relative group">
+                    <select 
+                      onChange={(e) => {
+                        const preset = CUSTOM_PRESETS.find(p => p.id === e.target.value);
+                        if (preset) setCustomSystemPrompt(preset.prompt);
+                      }}
+                      className="w-full bg-[#131A2A] border border-white/10 rounded-xl px-4 py-2.5 text-sm text-[#F1F5F9] focus:outline-none focus:border-[#3B82F6] appearance-none cursor-pointer hover:bg-[#1A2235] transition-colors"
+                      defaultValue=""
+                    >
+                      <option value="" disabled>Choose a template...</option>
+                      {CUSTOM_PRESETS.map(preset => (
+                        <option key={preset.id} value={preset.id}>{preset.name}</option>
+                      ))}
+                    </select>
+                    <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-[#94A3B8]">
+                      <ChevronDown size={16} />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="h-[1px] bg-white/[0.04]"></div>
+
+                <div className="flex flex-col">
+                  <span className="text-xs font-bold text-[#94A3B8] uppercase tracking-wider mb-2">Custom Prompt</span>
+                  <textarea 
+                    value={customSystemPrompt}
+                    onChange={e => setCustomSystemPrompt(e.target.value)}
+                    placeholder="You are a helpful assistant that..."
+                    className="bg-[#131A2A] border border-white/5 rounded-2xl p-4 text-sm text-[#E2E8F0] focus:outline-none focus:border-white/20 resize-none h-32 leading-relaxed"
+                    maxLength={1000}
+                  />
+                </div>
+                
+                <div className="flex justify-between items-center px-1">
                   <button onClick={() => setCustomSystemPrompt('')} className="text-xs font-semibold text-[#94A3B8] hover:text-white transition-colors">{t('settings_reset')}</button>
                   <span className="text-xs text-[#64748B] font-mono">{customSystemPrompt.length} / 1000</span>
                 </div>

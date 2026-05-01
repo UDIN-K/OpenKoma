@@ -106,7 +106,6 @@ export const en = {
   settings_change: "Change",
   settings_reset: "Reset",
   settings_available_models: "Available Models",
-  settings_premium_models: "Premium Models",
   settings_free: "Free",
   settings_premium: "Premium",
 

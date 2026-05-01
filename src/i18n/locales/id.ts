@@ -106,7 +106,6 @@ export const id = {
   settings_change: "Ubah",
   settings_reset: "Atur Ulang",
   settings_available_models: "Model Tersedia",
-  settings_premium_models: "Model Premium",
   settings_free: "Gratis",
   settings_premium: "Berbayar",
 
