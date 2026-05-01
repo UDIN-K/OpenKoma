@@ -7,7 +7,7 @@ import { useLanguageStore } from '../store/useLanguageStore';
 import { ThemeName } from '../types';
 import { getThemeGradient } from '../utils/theme';
 import { LanguageSelectorSheet } from '../components/LanguageSelectorSheet';
-import { signInWithGoogle, logOut, auth } from '../lib/firebase';
+import { signInWithGoogle, logOut, auth, handleRedirectResult } from '../lib/firebase';
 import { onAuthStateChanged, User } from 'firebase/auth';
 
 import { AI_PROVIDERS, AI_MODELS } from '../utils/models';
@@ -157,6 +157,11 @@ export function SettingsScreen({ onBack }: { onBack: () => void }) {
   }, [activeModal, provider]);
 
   useEffect(() => {
+    // Handle redirect result from Google Sign-In on native platforms
+    handleRedirectResult().then((redirectUser) => {
+      if (redirectUser) setUser(redirectUser);
+    });
+
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });

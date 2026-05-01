@@ -19,6 +19,9 @@ const config: CapacitorConfig = {
       overlaysWebView: true,
       backgroundColor: "#00000000"
     }
+  },
+  server: {
+    androidScheme: 'https'
   }
 };
 
