@@ -6,7 +6,7 @@
 
 The open-source AI Chat client. Fast, minimal, and completely free. Features local-first chat history, zero-setup free models, and custom API key support.
 
-> OpenKoma - The Ultimate AI Assistant Front-End
+> OpenKoma - The AI Assistant
 
 <div align="center">
   <img src="./banner.png" alt="OpenKoma Banner" width="100%" />
