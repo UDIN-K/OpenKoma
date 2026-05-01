@@ -12,6 +12,14 @@ The open-source AI Chat client. Fast, minimal, and completely free. Features loc
   <img src="./banner.png" alt="OpenKoma Banner" width="100%" />
 </div>
 
+## 📚 Documentation
+
+Quick links to important guides and resources:
+
+- **[🚀 Building Guide](./BUILDING.md)** - How to build and compile the Android APK
+- **[🔐 Security](./SECURITY.md)** - Security policy and vulnerability reporting
+- **[📋 Code of Conduct](./CODE_OF_CONDUCT.md)** - Community guidelines and expectations
+
 ## Features
 
 - **Open Source:** Completely free without tracking.
@@ -37,7 +45,7 @@ npm run dev
 
 ### Android Build Guide
 
-Want to compile this project into a native Android APK? Check out our step-by-step [**Android Build Guide**](./HOW-TO-BUILD-ANDROID.md).
+Want to compile this project into a native Android APK? Check out our step-by-step [**Building Guide**](./BUILDING.md).
 
 ## License
 
