@@ -89,7 +89,7 @@ export function getProvider(providerId: string): AIProvider | null {
             if (req.systemInstruction) config.systemInstruction = req.systemInstruction;
             
             const responseStream = await ai.models.generateContentStream({
-              model: req.modelId.includes('gemini') ? 'gemini-1.5-flash' : 'gemini-1.5-flash',
+              model: req.modelId,
               contents,
               config
             });
