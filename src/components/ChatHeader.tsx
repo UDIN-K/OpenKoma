@@ -113,7 +113,7 @@ export function ChatHeader({
         )}
       </AnimatePresence>
 
-      <div className="px-6 pt-6 pb-3 h-[72px] relative overflow-hidden">
+      <div className="px-6 pb-3 relative overflow-hidden" style={{ paddingTop: 'calc(8px + var(--sat, 0px))', minHeight: 'calc(52px + var(--sat, 0px))' }}>
         
         <AnimatePresence mode="popLayout" initial={false}>
           {!isSearchMode ? (
@@ -123,7 +123,8 @@ export function ChatHeader({
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: 20, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="flex items-center justify-between h-full w-full absolute inset-0 px-6 pt-6 pb-3"
+              className="flex items-center justify-between h-full w-full absolute inset-0 px-6 pb-3"
+              style={{ paddingTop: 'calc(8px + var(--sat, 0px))' }}
             >
               {/* Left: Back Button */}
               <motion.button 
@@ -172,7 +173,8 @@ export function ChatHeader({
               animate={{ x: 0, opacity: 1 }}
               exit={{ x: -20, opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className="flex items-center gap-3 h-full w-full absolute inset-0 px-6 pt-6 pb-3"
+              className="flex items-center gap-3 h-full w-full absolute inset-0 px-6 pb-3"
+              style={{ paddingTop: 'calc(8px + var(--sat, 0px))' }}
             >
                <motion.button 
                  whileTap={{ scale: 0.9 }}

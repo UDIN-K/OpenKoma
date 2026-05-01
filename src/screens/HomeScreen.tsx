@@ -17,7 +17,7 @@ export function HomeScreen({ onNavigateChat, onNavigateSettings }: { onNavigateC
     <div className="flex-1 flex flex-col bg-[#070B14] relative h-full overflow-hidden">
       
       {/* Header Info */}
-      <div className="px-6 pt-12 pb-2 flex justify-between items-center w-full">
+      <div className="px-6 pb-2 flex justify-between items-center w-full" style={{ paddingTop: 'calc(12px + var(--sat, 0px))' }}>
          <div className="flex items-center gap-2">
            <OpenKomaLogo size={20} className="text-[#F1F5F9]" />
            <span className="text-[#F1F5F9] font-bold tracking-tight text-[15px]">OpenKoma</span>

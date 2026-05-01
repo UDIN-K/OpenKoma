@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">OpenKoma</string>
+    <string name="title_activity_main">OpenKoma</string>
+    <string name="package_name">com.openkoma</string>
+    <string name="custom_url_scheme">com.openkoma</string>
+</resources>

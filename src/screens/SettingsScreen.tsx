@@ -68,7 +68,7 @@ export function SettingsScreen({ onBack }: { onBack: () => void }) {
 
   return (
     <div className="flex-1 flex flex-col bg-transparent relative h-full">
-      <header className="px-4 pt-12 pb-4 flex items-center justify-between shrink-0 bg-[#0A0E1A]/80 backdrop-blur-md border-b border-white/[0.04] sticky top-0 z-20">
+      <header className="px-4 pb-4 flex items-center justify-between shrink-0 bg-[#0A0E1A]/80 backdrop-blur-md border-b border-white/[0.04] sticky top-0 z-20" style={{ paddingTop: 'calc(16px + var(--sat, 0px))' }}>
         <div className="flex items-center gap-2">
           <motion.button 
             whileTap={{ scale: 0.9 }}

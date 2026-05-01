@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Send, Paperclip, Terminal, Square } from 'lucide-react';
+import { Send, Paperclip, Terminal, Square, FileDown, Copy, Check } from 'lucide-react';
 import { useChatStore } from '../store/useChatStore';
 import { useLanguageStore } from '../store/useLanguageStore';
 import { sendMessageStream } from '../services/aiService';
@@ -9,6 +9,7 @@ import { MarkdownRenderer, highlightText } from '../components/MarkdownRenderer'
 import { OpenKomaLogo } from '../components/OpenKomaLogo';
 import { ChatHeader } from '../components/ChatHeader';
 import { ChatInputBar } from '../components/ChatInputBar';
+import { exportToPDF } from '../utils/exportPdf';
 
 export function ChatScreen({ onBack, onNavigateSettings }: { onBack: () => void, onNavigateSettings: () => void }) {
   const [input, setInput] = useState('');
@@ -78,14 +79,51 @@ export function ChatScreen({ onBack, onNavigateSettings }: { onBack: () => void,
     }
   };
 
+  const compressImageToBase64 = (file: File, maxSize = 1024, quality = 0.75): Promise<string> => new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onerror = error => reject(error);
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let { width, height } = img;
+
+        // Scale down if larger than maxSize
+        if (width > maxSize || height > maxSize) {
+          if (width > height) {
+            height = Math.round((height * maxSize) / width);
+            width = maxSize;
+          } else {
+            width = Math.round((width * maxSize) / height);
+            height = maxSize;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d')!;
+        ctx.drawImage(img, 0, 0, width, height);
+
+        // Compress to JPEG for smaller payload
+        const compressed = canvas.toDataURL('image/jpeg', quality);
+        resolve(compressed);
+      };
+      img.onerror = () => reject(new Error('Failed to load image'));
+      img.src = reader.result as string;
+    };
+  });
+
   const handleSend = async (text: string = input) => {
     if ((!text.trim() && !extractedPdfText && !attachedFile) || isLoading || isProcessingFile) return;
 
     let finalPrompt = text.trim();
+    let imageBase64: string | null = null;
     if (extractedPdfText) {
        finalPrompt = `${finalPrompt}\n\n[Attached Context from ${attachedFile?.name}]:\n${extractedPdfText}`;
     } else if (attachedFile && attachedFile.type.startsWith('image/')) {
-       finalPrompt = finalPrompt ? `${finalPrompt}\n\n[Attached Image: ${attachedFile.name}]` : `[Attached Image: ${attachedFile.name}]`;
+       imageBase64 = await compressImageToBase64(attachedFile);
+       finalPrompt = finalPrompt ? `${finalPrompt}\n\n[Attached Image: ${attachedFile.name}]` : `Describe or analyze this image.`;
     }
     
     if (!finalPrompt.trim() && extractedPdfText) {
@@ -115,9 +153,22 @@ export function ChatScreen({ onBack, onNavigateSettings }: { onBack: () => void,
     // We get the actual provider and key from state to send using our aiService (not fully implemented yet here but we pass it as params if needed)
     // Actually our aiService is hardcoded to OpenRouter in logic right now as per the placeholder
 
+    // Construct system prompt based on personality
+    let systemInstruction = "You are OpenKoma, an advanced AI Agent Workspace designed with sleek mobile-first principles.";
+    if (state.personality === 'custom' && state.customSystemPrompt) {
+      systemInstruction = state.customSystemPrompt;
+    } else if (state.personality === 'coder') {
+      systemInstruction = "You are OpenKoma, an expert software engineer. Provide concise answers and always format code blocks correctly.";
+    } else if (state.personality === 'bahasa') {
+      systemInstruction = "Kamu adalah OpenKoma, asisten AI yang pintar. Selalu jawab menggunakan Bahasa Indonesia yang santai tapi profesional.";
+    }
+
     await sendMessageStream(
       history,
       apiKeys['openrouter'] || state.openRouterKey, // Fallback for legacy
+      state.model || 'meta-llama/llama-3-8b-instruct:free',
+      state.temperature || 0.7,
+      state.maxTokens || 2048,
       (chunk) => {
         updateMessage(botMessageId, chunk, true);
       },
@@ -129,7 +180,8 @@ export function ChatScreen({ onBack, onNavigateSettings }: { onBack: () => void,
         updateMessage(botMessageId, `\n\n**Error:** ${errorMsg}`, false);
         setIsLoading(false);
       },
-      "You are OpenKoma, an advanced AI Agent Workspace designed with sleek mobile-first principles."
+      systemInstruction,
+      imageBase64
     );
   };
 
@@ -335,6 +387,32 @@ export function ChatScreen({ onBack, onNavigateSettings }: { onBack: () => void,
                               </div>
                             )}
                           </div>
+                          {/* Action bar: Copy & PDF Export */}
+                          {message.content && !message.isStreaming && (
+                            <div className="flex items-center gap-2 mt-2 ml-0">
+                              <motion.button
+                                whileTap={{ scale: 0.9 }}
+                                onClick={() => {
+                                  navigator.clipboard.writeText(message.content);
+                                }}
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[#94A3B8] hover:text-white hover:bg-white/[0.08] transition-colors text-[11px] font-medium"
+                              >
+                                <Copy size={12} />
+                                Copy
+                              </motion.button>
+                              <motion.button
+                                whileTap={{ scale: 0.9 }}
+                                onClick={() => {
+                                  const chatTitle = activeConversation?.title || 'OpenKoma Response';
+                                  exportToPDF(message.content, chatTitle);
+                                }}
+                                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/[0.08] text-[#94A3B8] hover:text-white hover:bg-white/[0.08] transition-colors text-[11px] font-medium"
+                              >
+                                <FileDown size={12} />
+                                PDF
+                              </motion.button>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>

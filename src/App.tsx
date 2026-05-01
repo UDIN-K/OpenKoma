@@ -67,7 +67,7 @@ export default function App() {
               </div>
 
               {/* Bottom Navigation */}
-              <div className="h-[80px] bg-[#0A0E1A] border-t border-white/[0.06] absolute bottom-0 left-0 right-0 flex items-center justify-around px-8 pb-4 pt-4 shrink-0 z-10">
+              <div className="bg-[#0A0E1A] border-t border-white/[0.06] absolute bottom-0 left-0 right-0 flex items-center justify-around px-8 pt-4 shrink-0 z-10" style={{ paddingBottom: 'calc(12px + var(--sab, 0px))' }}>
                 <button 
                   onClick={() => setCurrentTab('home')}
                   className="flex flex-col items-center gap-1.5 min-w-[48px]"

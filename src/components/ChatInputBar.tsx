@@ -46,7 +46,7 @@ export function ChatInputBar({
   };
 
   return (
-    <div className="bg-[#0F172A]/95 backdrop-blur-md border-t border-white/[0.08] px-2 py-2 flex items-end gap-2 shrink-0 w-full mb-2">
+    <div className="bg-[#0F172A]/95 backdrop-blur-md border-t border-white/[0.08] px-2 pt-2 flex items-end gap-2 shrink-0 w-full" style={{ paddingBottom: 'calc(8px + var(--sab, 0px))' }}>
       
       {/* Left Attachment Button */}
       <motion.button

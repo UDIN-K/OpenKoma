@@ -19,7 +19,7 @@ export function SavedScreen({ onNavigateSettings, onNavigateChat }: { onNavigate
   return (
     <div className="flex-1 flex flex-col bg-[#070B14] relative h-full w-full overflow-hidden">
       {/* Header */}
-      <header className="px-6 pt-12 pb-4 flex flex-col shrink-0">
+      <header className="px-6 pb-4 flex flex-col shrink-0" style={{ paddingTop: 'calc(16px + var(--sat, 0px))' }}>
         <div className="flex items-center justify-between mb-6">
            <AnimatePresence mode="wait">
              {!isSearching ? (

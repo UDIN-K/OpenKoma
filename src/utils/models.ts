@@ -9,10 +9,16 @@ export const AI_PROVIDERS = [
 
 export const AI_MODELS: Record<string, { id: string, name: string, type: 'free' | 'premium', desc: string, cost: string }[]> = {
   openrouter: [
+    { id: 'tencent/hy3-preview:free', name: 'Tencent Hy3 Preview', type: 'free', desc: 'Tencent MoE model for agentic workflows', cost: 'Free' },
+    { id: 'nvidia/nemotron-3-super:free', name: 'Nemotron 3 Super', type: 'free', desc: '120B hybrid MoE model from NVIDIA', cost: 'Free' },
+    { id: 'inclusionai/ling-2.6-1t:free', name: 'Ling-2.6-1T', type: 'free', desc: 'Trillion-parameter flagship for fast reasoning', cost: 'Free' },
+    { id: 'openai/gpt-oss-120b:free', name: 'GPT-OSS-120B', type: 'free', desc: 'OpenAI 117B MoE for high-reasoning', cost: 'Free' },
+    { id: 'openai/gpt-oss-20b:free', name: 'GPT-OSS-20B', type: 'free', desc: 'OpenAI 21B MoE for lower-latency', cost: 'Free' },
+    { id: 'minimax/minimax-m2.5:free', name: 'MiniMax M2.5', type: 'free', desc: 'SOTA model for real-world productivity', cost: 'Free' },
+    { id: 'z-ai/glm-4.5-air:free', name: 'GLM 4.5 Air', type: 'free', desc: 'Lightweight MoE for agent-centric apps', cost: 'Free' },
+    { id: 'poolside/laguna-m.1:free', name: 'Laguna M.1', type: 'free', desc: 'Flagship coding agent from Poolside', cost: 'Free' },
+    { id: 'google/gemma-4-31b-it:free', name: 'Gemma 4 31B', type: 'free', desc: 'Google DeepMind multimodal model', cost: 'Free' },
     { id: 'meta-llama/llama-3-8b-instruct:free', name: 'Llama 3 8B Instruct', type: 'free', desc: 'Fast & capable for everyday tasks', cost: 'Free' },
-    { id: 'google/gemini-flash-1.5-8b', name: 'Gemini Flash 1.5', type: 'free', desc: 'Google\'s lightweight model', cost: 'Free' },
-    { id: 'mistralai/mistral-7b-instruct:free', name: 'Mistral 7B', type: 'free', desc: 'Great for European languages', cost: 'Free' },
-    { id: 'qwen/qwen-2-7b-instruct:free', name: 'Qwen 2 7B', type: 'free', desc: 'Strong multilingual support', cost: 'Free' },
     { id: 'openai/gpt-4o', name: 'GPT-4o', type: 'premium', desc: 'Most capable OpenAI model', cost: '$5.00/1M' },
     { id: 'anthropic/claude-3.5-sonnet', name: 'Claude 3.5 Sonnet', type: 'premium', desc: 'Best for writing & analysis', cost: '$3.00/1M' },
     { id: 'google/gemini-1.5-pro', name: 'Gemini 1.5 Pro', type: 'premium', desc: 'Large context window (1M tokens)', cost: '$7.00/1M' },

@@ -96,6 +96,11 @@ const renderWithHighlight = (children: React.ReactNode, searchQuery?: string): R
 };
 
 export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, searchQuery }) => {
+  // Preprocess LaTeX math blocks because remark-math prefers $$ over \[ \]
+  let preprocessed = content || '';
+  preprocessed = preprocessed.replace(/\\\[([\s\S]*?)\\\]/g, '$$$$$1$$$$'); // \[ \] to $$ $$
+  preprocessed = preprocessed.replace(/\\\(([\s\S]*?)\\\)/g, '$$$1$$');     // \( \) to $ $
+
   return (
     <ReactMarkdown
       remarkPlugins={[remarkGfm, remarkMath]}
@@ -112,9 +117,16 @@ export const MarkdownRenderer: React.FC<MarkdownRendererProps> = ({ content, sea
         h4: ({ node, children, ...props }) => <h4 {...props}>{renderWithHighlight(children, searchQuery)}</h4>,
         h5: ({ node, children, ...props }) => <h5 {...props}>{renderWithHighlight(children, searchQuery)}</h5>,
         h6: ({ node, children, ...props }) => <h6 {...props}>{renderWithHighlight(children, searchQuery)}</h6>,
+        table: ({ node, ...props }) => (
+          <div className="overflow-x-auto my-4 w-full scrollbar-thin scrollbar-thumb-white/20">
+            <table className="w-full border-collapse border border-white/10 text-sm" {...props} />
+          </div>
+        ),
+        th: ({ node, ...props }) => <th className="border border-white/10 px-3 py-2 bg-[#1E293B] text-left font-semibold text-white whitespace-nowrap" {...props} />,
+        td: ({ node, ...props }) => <td className="border border-white/10 px-3 py-2 text-[#E2E8F0] whitespace-nowrap" {...props} />,
       }}
     >
-      {content}
+      {preprocessed}
     </ReactMarkdown>
   );
 };

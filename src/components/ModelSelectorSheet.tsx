@@ -40,7 +40,7 @@ export function ModelSelectorSheet({
             initial={{ opacity: 0 }} 
             animate={{ opacity: 1 }} 
             exit={{ opacity: 0 }} 
-            className="absolute inset-0 bg-black/60 backdrop-blur-[2px] z-40" 
+            className="fixed inset-0 bg-black/60 backdrop-blur-[2px] z-[100]" 
             onClick={onClose} 
           />
           <motion.div 
@@ -49,7 +49,7 @@ export function ModelSelectorSheet({
             exit={{ y: '100%' }} 
             transition={{ type: 'spring', damping: 25, stiffness: 200 }} 
             onClick={(e) => e.stopPropagation()}
-            className="absolute bottom-0 left-0 right-0 max-h-[85%] bg-[#0A0E1A] border-t border-white/10 rounded-t-[32px] flex flex-col shadow-[0_-8px_40px_rgba(0,0,0,0.5)] z-50"
+            className="fixed bottom-0 left-0 right-0 max-h-[85%] bg-[#0A0E1A] border-t border-white/10 rounded-t-[32px] flex flex-col shadow-[0_-8px_40px_rgba(0,0,0,0.5)] z-[110]"
           >
             {/* Drag Handle */}
               <div className="w-full flex justify-center pt-3 pb-1 shrink-0" onClick={onClose}>

@@ -28,7 +28,7 @@ export function ConversationsScreen({ onNavigateChat, onNavigateSettings }: { on
     <div className="flex-1 flex flex-col bg-[#070B14] relative h-full w-full overflow-hidden">
       
       {/* Header */}
-      <header className="px-6 pt-14 pb-4 flex items-center justify-between shrink-0">
+      <header className="px-6 pb-4 flex items-center justify-between shrink-0" style={{ paddingTop: 'calc(16px + var(--sat, 0px))' }}>
         <h1 className="font-bold text-2xl tracking-tight text-[#F1F5F9]">Conversations</h1>
         <button 
           onClick={onNavigateSettings}
