@@ -166,7 +166,7 @@ export function ChatScreen({ onBack, onNavigateSettings }: { onBack: () => void,
     await sendMessageStream(
       history,
       apiKeys['openrouter'] || state.openRouterKey, // Fallback for legacy
-      state.model || 'meta-llama/llama-3-8b-instruct:free',
+      state.model || 'google/gemini-2.0-flash-lite-preview-02-05:free',
       state.temperature || 0.7,
       state.maxTokens || 2048,
       (chunk) => {

@@ -18,7 +18,7 @@ export const AI_MODELS: Record<string, { id: string, name: string, type: 'free' 
     { id: 'z-ai/glm-4.5-air:free', name: 'GLM 4.5 Air', type: 'free', desc: 'Lightweight MoE for agent-centric apps', cost: 'Free' },
     { id: 'poolside/laguna-m.1:free', name: 'Laguna M.1', type: 'free', desc: 'Flagship coding agent from Poolside', cost: 'Free' },
     { id: 'google/gemma-4-31b-it:free', name: 'Gemma 4 31B', type: 'free', desc: 'Google DeepMind multimodal model', cost: 'Free' },
-    { id: 'meta-llama/llama-3-8b-instruct:free', name: 'Llama 3 8B Instruct', type: 'free', desc: 'Fast & capable for everyday tasks', cost: 'Free' },
+    { id: 'google/gemini-2.0-flash-lite-preview-02-05:free', name: 'Gemini 2.0 Flash Lite', type: 'free', desc: 'Fast & capable for everyday tasks', cost: 'Free' },
     { id: 'openai/gpt-4o', name: 'GPT-4o', type: 'premium', desc: 'Most capable OpenAI model', cost: '$5.00/1M' },
     { id: 'anthropic/claude-3.5-sonnet', name: 'Claude 3.5 Sonnet', type: 'premium', desc: 'Best for writing & analysis', cost: '$3.00/1M' },
     { id: 'google/gemini-1.5-pro', name: 'Gemini 1.5 Pro', type: 'premium', desc: 'Large context window (1M tokens)', cost: '$7.00/1M' },

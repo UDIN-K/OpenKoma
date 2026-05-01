@@ -358,9 +358,9 @@ export function SettingsScreen({ onBack }: { onBack: () => void }) {
           >
             <div className="p-4 border-b border-white/[0.06] flex items-center justify-between hover:bg-white/[0.02] transition-colors">
               <span className="text-sm font-medium text-[#E2E8F0]">{t('settings_version')}</span>
-              <span className="text-sm font-mono text-[#94A3B8]">2.0.0-PRO</span>
+              <span className="text-sm font-mono text-[#94A3B8]">3.0.0-PRO</span>
             </div>
-            <a href="https://github.com/ud1nk" target="_blank" rel="noreferrer" className="p-4 border-b border-white/[0.06] flex items-center justify-between hover:bg-white/[0.02] transition-colors">
+            <a href="https://github.com/UDIN-K/OpenKoma" target="_blank" rel="noreferrer" className="p-4 border-b border-white/[0.06] flex items-center justify-between hover:bg-white/[0.02] transition-colors">
                <div className="flex items-center gap-2 text-[#E2E8F0]">
                  <Github size={16} />
                  <span className="text-sm font-medium">{t('settings_source_code')}</span>

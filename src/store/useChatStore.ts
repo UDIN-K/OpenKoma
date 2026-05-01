@@ -62,7 +62,7 @@ export const useChatStore = create<ChatState>()(
       provider: 'openrouter',
       apiKeys: {},
       ollamaUrl: 'http://localhost:11434',
-      model: 'meta-llama/llama-3-8b-instruct:free',
+      model: 'google/gemini-2.0-flash-lite-preview-02-05:free',
       personality: 'default',
       customSystemPrompt: '',
       temperature: 0.7,

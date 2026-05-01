@@ -152,7 +152,7 @@ export function HomeScreen({ onNavigateChat, onNavigateSettings }: { onNavigateC
                     <div className="flex-1"></div>
 
                     {lastMessage && (
-                      <div className="bg-black/20 backdrop-blur-sm rounded-xl p-2.5 w-full border border-white/5">
+                      <div className="bg-black/30 rounded-xl p-2.5 w-full border border-white/5">
                          <p className="text-[10px] text-[#cbd5e1] line-clamp-2 leading-tight">
                            {stripMarkdown(lastMessage.content) || 'Empty message...'}
                          </p>

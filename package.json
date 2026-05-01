@@ -1,7 +1,7 @@
 {
   "name": "openkoma",
   "private": true,
-  "version": "1.0.0",
+  "version": "3.0.0",
   "description": "The ultimate open-source AI Chat client. Fast, minimal, and completely free.",
   "author": "UDIN-K",
   "license": "Apache-2.0",

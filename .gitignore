@@ -48,3 +48,9 @@ android/app/src/main/res/xml/config.xml
 .Spotlight-V100
 .Trashes
 ehthumbs.db
+
+# Keystore and Code Signing
+*.keystore
+*.jks
+key.properties
+
