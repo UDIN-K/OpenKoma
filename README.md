@@ -35,6 +35,10 @@ npm install
 npm run dev
 ```
 
+### Android Build Guide
+
+Want to compile this project into a native Android APK? Check out our step-by-step [**Android Build Guide**](./HOW-TO-BUILD-ANDROID.md).
+
 ## License
 
 This project is licensed under the Apache 2.0 License.
