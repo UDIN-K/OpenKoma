@@ -1,0 +1,19 @@
+{
+  "name": "OpenKoma",
+  "packageName": "com.openkoma",
+  "description": "The open-source AI Chat client. Fast, minimal, and completely free. Features local-first chat history, zero-setup free models, and custom API key support.",
+  "version": "1.0.0",
+  "build": 1,
+  "author": "UDIN-K",
+  "license": "Apache-2.0",
+  "repository": "https://github.com/UDIN-K/OpenKoma",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "ai-chat",
+    "multi-model",
+    "byok",
+    "i18n",
+    "pdf-reader",
+    "math-renderer"
+  ]
+}
