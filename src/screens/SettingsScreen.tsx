@@ -419,8 +419,9 @@ export function SettingsScreen({ onBack }: { onBack: () => void }) {
                         onClick={async () => {
                           try {
                             await signInWithGoogle();
-                          } catch (e) {
+                          } catch (e: any) {
                             console.error(e);
+                            alert('Google Sign-In Error: ' + (e?.message || JSON.stringify(e)));
                           }
                         }}
                         className="bg-white text-black px-4 py-3 rounded-xl font-bold text-xs flex justify-center items-center hover:bg-gray-100 transition-colors shadow-sm w-full"
