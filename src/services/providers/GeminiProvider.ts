@@ -44,7 +44,7 @@ export class GeminiProvider implements AIProvider {
       const ai = new GoogleGenAI({ apiKey: params.apiKey || geminiApiKey });
 
       const responseStream = await ai.models.generateContentStream({
-        model: params.modelId.includes('gemini') ? params.modelId : 'gemini-1.5-flash',
+        model: params.modelId.includes('gemini') ? params.modelId : 'gemini-2.0-flash',
         contents,
         config
       });
